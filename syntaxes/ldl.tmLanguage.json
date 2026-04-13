@@ -1,41 +1,346 @@
-{
-	"$schema": "https://raw.githubusercontent.com/-/tmlanguage/master/tmlanguage.json",
-	"name": "LDL",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#conditions"
-		},
-		{
-			"include": "#numbers"
-		},
-		{
-			"include": "#operators"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.ldl",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.ldl",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.ldl",
-					"match": "\\\\."
-				}
-			]
-		}
-	},
-	"scopeName": "source.ldl"
+{ // This file was generated based on the YAML/Sublime-Syntax definition at https://github.com/grottaAzzurra/ldl and is currently not yet adapted for use with VSCode due to FILO capabilities not being supported with tmLanguage.json contexts. Check back soon for an updated version.
+    "name": "LDL",
+    "scopeName": "source.ldl",
+    "patterns": [
+      {
+        "include": "#strings"
+      },
+      {
+        "include": "#conditions"
+      },
+      {
+        "include": "#non-arithmetic-operators"
+      },
+      {
+        "include": "#numbers"
+      },
+      {
+        "include": "#keywords"
+      }
+    ],
+    "repository": {
+        "non-arithmetic-operators": {
+        	"patterns": [
+                {
+                    "match": "(<|>|\\=)",
+                    "name": "keyword.operator.logical.ldl"
+                },
+                {
+                    "match": "(?i)\\b(not|and|or|equal|length;|le;|position;|pos;|po;|format;|ft;|numeric|actual;|actual|back;|back|every;|every|from;|from|until;|until|group;|group|last;|last|stb;|total;|total|to.daynumber;|to.daynumber|to.date;|to.date|to.alpha;|to.alpha|giving;|giving|remainder;|rem;)",
+                    "name": "keyword.operator.word.ldl"
+                },
+                {
+                    "match": "(?i)\\b(edit;|ed;)\\s*",
+                    "name": "keyword.operator.word.ldl",
+                    "push": "expect_edit_operator"
+                }
+            ]
+        }
+        "arithmetic-operators": {
+        	"patterns": [
+                {
+                    "match": "(?<=[\\w)])\\s*(\\+|-|\\*\\*|\\*|\\/)\\s*(?=[\\w(])",
+                    "name": "keyword.operator.arithmetic.ldl"
+                }
+            ]
+        }
+        "expect_edit_operator": {
+        	"patterns": [
+                {
+                    "match": "(?i)(a|d|k|w|n|c|s|-|\\+|\\$)",
+                    "name": "keyword.operator.character.ldl",
+                    "pop": true
+                },
+                {
+                    "match": "(?=\\S)",
+                    "pop": true
+                }
+            ]
+        }
+        "numbers": {
+        	"patterns": [
+                {
+                    "match": "(?<=[\\s(+\\-*\\/])-?[0-9]*\\.[0-9]+\\b",
+                    "name": "constant.numeric.ldl"
+                },
+                {
+                    "match": "(?<=[\\s(+\\-*\\/])-?[0-9]+\\b",
+                    "name": "constant.numeric.ldl"
+                }
+            ]
+        }
+        "keywords": {
+        	"patterns": [
+                {
+                    "match": "(?i)(?<![\\.])\\b(attention|error|abort;|accept;|ax;|adhoc.mode;|adhoc;|advance;|av;|auto;|au;|determine;|determine|dt;|auto.entry;|ae;|auto.array;|aua;|auto.entry;|ae;|begin.case;|bc;|auto.format;|af;|begin.edit;|begin.loop;|bg;|look.up;|lu;|begin.page;|bp;|clear.array;|cla;|call;|wake.up;|wu;|restart;|rt;|perform.frame.logic;|pfl;|print.frame;|pf;|purge;|pu;|recall;|rc;|release;|rel;|critical.point;|cp;|no.release;|nr;|switch.to;|swt;|jump.to;|jto;|extract;|ex;|extracted.as;|eas;|flag;|fl;|fg;|flag.array;|fla;|global.sd;|gsd;|insert;|ins;|label;|lab;|find;|find|get;|load;|new.page;|new.page|page;|pg;|retain.as;|run;|set.title;|sett;|start;|st;|roc.mode;|roc;|send.print;|send;|sp;|sendlist.dynamic;|sldyn;|sendlist.static;|slsta;|send.message;|sm;|smsg;|sleep;|slp;)\\s",
+                    "name": "keyword.control.ldl"
+                },
+                {
+                    "match": "(?i)(?<![\\.])\\b(auto.clear;|ac;|auto; write&clear|auto;write&clear|auto; write|auto;write|end;|end.edit;|end.case;|ec;|end.exit;|ee;|end.no.print;|enp;|break;|bk;|end.group;|end.use;|eu;)\\s",
+                    "name": "keyword.control.ldl"
+                },
+                {
+                    "match": "(?i)(?<![\\.])\\b(else;|otherwise;|ow;)\\s",
+                    "name": "keyword.control.ldl"
+                },
+                {
+                    "match": "(?i)(?<![\\.])\\b(access.ext;|aext;|ascending;|as;|attribute;|attr;|channel;|comp.name;|contra;|cn;|cursor;|cu;|data;|da;|date.convert;|dc;|de;|delimiter;|delim;|descending;|dsc;|detach;|det;|dth;|discount.cash;|dcf;|edit.only;|exclusive.use;|exu;|exist;|get.length;|gl;|group;|initialize;|init;|keyonly;|left.align;|la;|lower.case;|lc;|match;|move.array;|mva;|move.auto;|ma;|move.auto.array;|maa;|move.date;|md;|move.time;|mt;|of;|on.change;|och;|ordinate;|rounded;|rou;|same.as;|secure;|selected.by;|serial;|set.db;|sort;|sorta;|sortd;|so;|stn.info;|si;|upper.case;|uc;|gs;)\\s",
+                    "name": "keyword.other.ldl"
+                },
+                {
+                    "match": "(?i)(?<![\\.,-])\\b(daynum|uk-alpha|us-alpha|in-alpha|dd-mm-yy|dd-mm-ccyy|dd-mmm-yy|dd-mmm-ccyy|ddmmmyy|ddmmmccyy|ddmmyy|ddmmccyy|mm-dd-yy|mm-dd-ccyy|mmddyy|mmddccyy|mmm-dd-yy|mmm-dd-ccyy|mmmddyy|mmmddccyy|yy-mm-dd|ccyy-mm-dd|yy-mmm-dd|ccyy-mmm-dd|yyddd|ccyyddd|yymmdd|ccyymmdd|yymmmdd|ccyymmmdd|today|weekno)\\s",
+                    "name": "keyword.other.ldl"
+                },
+                {
+                    "match": "(?i)(\\s|\\b)(actmth|glb.2pc|glb.actionkey|glb.add|glb.altuser|glb.appname|glb.appno|glb.ascprthost|glb.ascprt|glb.backup|glb.balance|glb.base|glb.ccs|glb.century-start|glb.century|glb.change|glb.chargecode|glb.chg|glb.close|glb.copy|glb.date|glb.dbtype|glb.dc|glb.deadlock|glb.del|glb.destenv|glb.desthost|glb.destination|glb.destnoform|glb.destxnid|glb.device|glb.dlrecover|glb.dlretry|glb.eop|glb.error|glb.examkey|glb.exname|glb.extdbstatus|glb.extdb|glb.extext|glb.fileinfo|glb.filler|glb.formdepth|glb.formid|glb.fulllength|glb.fullstn|glb.gui|glb.high|glb.htimeout|glb.hubstatus|glb.hubtimeout|glb.initfullstn|glb.initstn|glb.inputdata|glb.inq|glb.language|glb.length|glb.linecount|glb.lineupname|glb.lineup|glb.low|glb.match|glb.maxcopy|glb.mixno|glb.numcopies|glb.oltpservice|glb.oltpsubtype|glb.oltptype|glb.oltpvalue|glb.originenv|glb.originhost|glb.originispec|glb.originptn|glb.originxnid|glb.origin|glb.pagecount|glb.paramflag|glb.param|glb.pitch|glb.previspec|glb.printat|glb.printbanner|glb.printhost|glb.priority|glb.priv|glb.product|glb.prtparam|glb.pur|glb.recordx|glb.recover|glb.repgendate|glb.repgentime|glb.replang|glb.repname|glb.report|glb.repunique|glb.repversion|glb.request|glb.rocflag|glb.savedays|glb.secondary|glb.selfdb|glb.selfenv|glb.selfhost|glb.selfxnid|glb.self|glb.shadow|glb.source|glb.spaces|glb.stalang|glb.station|glb.status|glb.stnhost|glb.stn|glb.style|glb.subsys|glb.sysgendate|glb.sysgentime|glb.sysversion|glb.task|glb.time|glb.title|glb.todays-date-num|glb.todays-day|glb.todays-month-num|glb.todays-month|glb.todays-year|glb.today|glb.total|glb.transtate|glb.unique|glb.usercode|glb.user|glb.versionid|glb.work|glb.yymmdd|glb.zeros|input-date|ispec|maint|today|todays-date-num|todays-day|todays-month|todays-month-num|todays-year|tranno)(\\s|\\b)",
+                    "captures": {
+                    "2": "keyword.other.ldl"
+                    }
+                }
+            ]
+        }
+        "conditions": {
+        	"patterns": [
+                {
+                    "match": "(?i)(compute;|comp;)\\s+",
+                    "captures": {
+                    "1": "keyword.other.ldl"
+                    },
+                    "push": "expect_compute"
+                },
+                {
+                    "match": "\\(",
+                    "name": "punctuation.section.parens.begin.ldl",
+                    "push": "inside_condition"
+                }
+            ]
+        }
+        "expect_compute": {
+            "patterns": [
+                {
+                    "match": "\\(",
+                    "name": "punctuation.section.parens.begin.ldl",
+                    "set": "inside_compute"
+                },
+                {
+                    "match": "$",
+                    "pop": true
+                }
+            ]
+        }
+        "inside_compute": {
+        	"patterns": [
+                {
+                    "meta_scope": "meta.parens.ldl"
+                },
+                {
+                    "include": "arithmetic-operators"
+                },
+                {
+                    "include": "keywords"
+                },
+                {
+                    "include": "numbers"
+                },
+                {
+                    "match": "\\(",
+                    "name": "punctuation.section.parens.begin.ldl",
+                    "push": "inside_compute"
+                },
+                {
+                    "match": "\\)",
+                    "name": "punctuation.section.parens.end.ldl",
+                    "pop": true
+                }
+            ]
+        }
+        "inside_condition": {
+        	"patterns": [
+                {
+                    "include": "non-arithmetic-operators"
+                },
+                {
+                    "include": "numbers"
+                },
+                {
+                    "include": "keywords"
+                },
+                {
+                    "include": "conditions"
+                },
+                {
+                    "meta_scope": "meta.parens.ldl"
+                },
+                {
+                    "match": "\\)",
+                    "name": "punctuation.section.parens.end.ldl",
+                    "pop": true
+                }
+            ]
+        }
+        "strings": {
+        	"patterns": [
+                {
+                    "match": "(?i)(sd;|setup.data;|message;|me;)\\s+",
+                    "captures": {
+                    "1": "keyword.control.ldl"
+                    },
+                    "push": "expect_string_complex"
+                },
+                {
+                    "match": "(?i)(do.when;|dw;|case;|cs;)\\s+",
+                    "captures": {
+                    "1": "keyword.control.ldl"
+                    },
+                    "push": "expect_string_complex"
+                },
+                {
+                    "match": "(?i)(mv;|move;)\\s*",
+                    "captures": {
+                    "1": "keyword.other.ldl"
+                    },
+                    "push": "expect_string_complex"
+                },
+                {
+                    "match": "(?i)(attach;|att;|ats;|attach&space;)\\s+",
+                    "captures": {
+                    "1": "keyword.other.ldl"
+                    },
+                    "push": "expect_string"
+                },
+                {
+                    "match": "(?i)(add;|ad;|divide;|dv;|mu;|multi;|multiply;|subtract;|sb;)\\s+",
+                    "captures": {
+                    "1": "keyword.other.ldl"
+                    },
+                    "push": "expect_number_paren"
+                }
+            ]
+        }
+        "expect_string_complex": {
+            "patterns": [
+                {
+                    "match": "(?=\\([-0-9\\s.]+\\))",
+                    "push": "expect_number_paren"
+                },
+                {
+                    "match": "\\(\"|\\(",
+                    "name": "punctuation.definition.string.begin.ldl",
+                    "push": "inside_string"
+                },
+                {
+                    "include": "keywords"
+                },
+                {
+                    "include": "non-arithmetic-operators"
+                },
+                {
+                    "include": "numbers"
+                },
+                {
+                    "match": "$",
+                    "pop": true
+                },
+                {
+                    "match": "\\S+",
+                    "pop": false
+                }
+            ]
+        }
+        "expect_string": {
+        	"patterns": [
+                {
+                    "match": "(?=\\([-0-9\\s.]+\\))",
+                    "push": "expect_number_paren"
+                },
+                {
+                    "match": "\\(\"|\\(",
+                    "name": "punctuation.definition.string.begin.ldl",
+                    "push": "inside_string"
+                },
+                {
+                    "match": "$",
+                    "pop": true
+                },
+                {
+                    "match": "\\S+",
+                    "pop": false
+                }
+            ]
+        }
+        "inside_string": {
+        	"patterns": [
+                {
+                    "meta_include_prototype": false
+                },
+                {
+                    "meta_scope": "string.quoted.double.ldl"
+                },
+                {
+                    "match": "\\\\",
+                    "name": "constant.character.escape.ldl"
+                },
+                {
+                    "match": "\\(\"|\\(",
+                    "push": "inside_string_nested"
+                },
+                {
+                    "match": "\"\\)|\\)",
+                    "name": "punctuation.definition.string.end.ldl",
+                    "pop": true
+                }
+            ]
+        }
+        "inside_string_nested": {
+        	"patterns": [
+                {
+                    "meta_include_prototype": false
+                },
+                {
+                    "meta_scope": "string.quoted.double.ldl"
+                },
+                {
+                    "match": "\\\\",
+                    "name": "constant.character.escape.ldl"
+                },
+                {
+                    "match": "\\(\"|\\(",
+                    "push": "inside_string_nested"
+                },
+                {
+                    "match": "\"\\)|\\)",
+                    "pop": true
+                }
+            ]
+        }
+        "expect_number_paren": {
+        	"patterns": [
+                {
+                    "match": "\\(",
+                    "name": "punctuation.definition.number.begin.ldl",
+                    "set": "inside_number_paren"
+                },
+                {
+                    "match": "$",
+                    "pop": true
+                },
+                {
+                    "match": "(?=[^(])",
+                    "pop": true
+                }
+            ]
+        }
+        "inside_number_paren": {
+        	"patterns": [
+                {
+                    "include": "numbers"
+                },
+                {
+                    "match": "\\)",
+                    "name": "punctuation.definition.number.end.ldl",
+                    "pop": true
+                }
+            ]
+        }
+    }
 }
